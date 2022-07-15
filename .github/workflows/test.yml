@@ -21,7 +21,7 @@ jobs:
         JSON="${JSON//$'\r'/'%0D'}"
         echo "::set-output name=deployment-matrix::$JSON"
         
-        echo "JSON: $JSON"
+        echo "JSON: toJSON($JSON)"
 
   Ring:
     name: "${{ matrix.server.name }}"
