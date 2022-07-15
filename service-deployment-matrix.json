@@ -1,0 +1,52 @@
+        {
+            "name": "Ring_0",
+            "displayName": "Ring 0",
+            "regions": [
+                {
+                    "name": "US_Region",
+                    "displayName": "US Region",
+                    "locations": [
+                        {
+                            "name": "EastUS2_Location",
+                            "displayName": "EastUS2 Location",
+                            "envTypes": [
+                                {
+                                    "name": "Client_Development",
+                                    "displayName": "Client_Development",
+                                    "envs": [
+                                        {
+                                            "name": "Client_Development_001",
+                                            "displayName": "Client Development 001",
+                                            "approvalStageEnv": "poh-env-prod-eg-clientdev_eastus2",
+                                            "environmentResourceGroup": "poh-environment-operations",
+                                            "environment": "DevOpsTest",
+                                            "environmentCode": "4"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "CentralUS_Location",
+                            "displayName": "CentralUS Location",
+                            "envTypes": [
+                                {
+                                    "name": "Client_Test_UAT",
+                                    "displayName": "Client_Test",
+                                    "envs": [
+                                        {
+                                            "name": "Client_Test_001",
+                                            "displayName": "Client Test 001",
+                                            "approvalStageEnv": "poh-env-prod-eg-clientdev_eastus2",
+                                            "environmentResourceGroup": "poh-environment-operations",
+                                            "environment": "DevOpsTest",
+                                            "environmentCode": "4"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
