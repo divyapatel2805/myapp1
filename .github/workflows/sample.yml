@@ -19,10 +19,10 @@ jobs:
       id: export-service-deployment-matrix
       run: |
         Ring="$(cat ./service-deployment-matrix.json)"
-        Regions="$(cat ./service-deployment-matrix.json | jq '.regions[]' )"
-        Locations="$(cat ./service-deployment-matrix.json | jq '.regions[]' | jq '.locations[]' )"
-        EnvTypes="$(cat ./service-deployment-matrix.json | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' )"
-        Env="$(cat ./service-deployment-matrix.json | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' | jq '.envs[]' )"
+        Regions="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' )"
+        Locations="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' )"
+        EnvTypes="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' )"
+        Env="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' | jq '.envs[]' )"
 
         echo "::set-output name=service-deployment-ring::${Ring}"
         echo "::set-output name=service-deployment-regions::${Regions}"
