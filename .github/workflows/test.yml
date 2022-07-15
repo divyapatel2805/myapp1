@@ -30,7 +30,7 @@ jobs:
       matrix:
         server: ${{ fromJson(needs.ReadJSON.outputs.deployment-matrix) }}
     steps:
-    - run: echo "${{ matrix.server.name }}"
-    - run: echo "${{ matrix.server.ip }}"
-    - run: echo "${{ matrix.server.username }}"
-    - run: echo "${{ matrix.server.port }}"
+    - run: echo "${{ matrix.server.displayName }}"
+    - run: echo "${{ matrix.server.environment }}"
+    - run: echo "${{ matrix.server.environmentCode }}"
+
