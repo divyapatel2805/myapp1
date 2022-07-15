@@ -22,7 +22,7 @@ jobs:
         echo "::set-output name=deployment-matrix::$JSON"
 
   Ring:
-    name: "${{ matrix.server.displayName }}"
+    name: "${{ matrix.server.name }}"
     runs-on: ubuntu-latest
     needs: [ReadJSON]
     strategy:
