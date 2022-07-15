@@ -7,7 +7,7 @@ jobs:
     name: "Reading JSON Object"
     runs-on: ubuntu-latest
     outputs:
-      deployment-matrix: ${{ steps.export-deployment-matrix.outputs.deployment-matrix }}
+      deployment-matrix: ${{ toJSON(steps.export-deployment-matrix.outputs.deployment-matrix) }}
 
     steps:
     - uses: actions/checkout@v2
