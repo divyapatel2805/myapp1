@@ -1,4 +1,3 @@
-[
 {
     "name": "server-1",
     "ip": "123.456.78.91",
@@ -7,7 +6,7 @@
     "beforeHooks": "",
     "afterHooks": "",
     "path": ""
-},
+}
 {
     "name": "server-2",
     "ip": "123.456.78.92",
@@ -17,4 +16,4 @@
     "afterHooks": "",
     "path": ""
 }
-]
+
