@@ -18,7 +18,7 @@ jobs:
     - name: Export deployment matrix
       id: export-service-deployment-matrix
       run: |
-        Ring="$(cat ./service-deployment-matrix.json)"
+        Ring="$(cat ./service-deployment-matrix.json | jq '.[]' )"
         Regions="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' )"
         Locations="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' )"
         EnvTypes="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' )"
