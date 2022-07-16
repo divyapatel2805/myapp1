@@ -55,7 +55,7 @@ jobs:
         echo "EnvTypes: $EnvTypes"
         echo "Env: $Env"
 
-  DeployService:
+  Ring:
     name: "${{ matrix.ring.displayName }}"
     runs-on: ubuntu-latest
     needs: [ReadJSON]
@@ -69,8 +69,17 @@ jobs:
     steps:
     - run: echo "${{ matrix.ring.displayName }} Approved"
     - run: echo "${{ matrix.region.displayName }} Approved"
-    - run: echo "${{ matrix.location.displayName }} Approved"
-    - run: echo "${{ matrix.envType.displayName }} Approved"
-    - run: echo "${{ matrix.env.displayName }} Approved"
+
+    Region:
+    name: "${{ matrix.region.displayName }}"
+    runs-on: ubuntu-latest
+    needs: [ReadJSON, ${{ matrix.ring.name }}]
+    strategy:
+      matrix:
+        ring: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-ring) }}
+        region: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-regions) }}
+    steps:
+    - run: echo "${{ matrix.region.displayName }} Approved"
+
     
  
