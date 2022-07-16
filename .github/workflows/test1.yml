@@ -18,67 +18,31 @@ jobs:
     - name: Export deployment matrix
       id: export-service-deployment-matrix
       run: |
-        Ring="$(cat ./service-deployment-matrix.json | jq '.[]' | jq -s '.')"
-        Ring="${Ring//'%'/'%25'}"
-        Ring="${Ring//$'\n'/'%0A'}"
-        Ring="${Ring//$'\r'/'%0D'}"
         
-        Regions="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq -s '.' )"
-        Regions="${Regions//'%'/'%25'}"
-        Regions="${Regions//$'\n'/'%0A'}"
-        Regions="${Regions//$'\r'/'%0D'}"
-        
-        Locations="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq -s '.' )"
-        Locations="${Locations//'%'/'%25'}"
-        Locations="${Locations//$'\n'/'%0A'}"
-        Locations="${Locations//$'\r'/'%0D'}"
-        
-        EnvTypes="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' | jq -s '.' )"
-        EnvTypes="${EnvTypes//'%'/'%25'}"
-        EnvTypes="${EnvTypes//$'\n'/'%0A'}"
-        EnvTypes="${EnvTypes//$'\r'/'%0D'}"
-        
-        Env="$(cat ./service-deployment-matrix.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' | jq '.envs[]' | jq -s '.' )"
+        Env="$(cat ./deployment-config.json | jq '.[]' | jq '.regions[]' | jq '.locations[]' | jq '.envTypes[]' | jq '.envs[]' | jq -s '.' )"
         Env="${Env//'%'/'%25'}"
         Env="${Env//$'\n'/'%0A'}"
         Env="${Env//$'\r'/'%0D'}"
 
-        echo "::set-output name=service-deployment-ring::$Ring"
-        echo "::set-output name=service-deployment-regions::$Regions"
-        echo "::set-output name=service-deployment-locations::$Locations"
-        echo "::set-output name=service-deployment-envTypes::$EnvTypes"
         echo "::set-output name=service-deployment-env::$Env"
-        
-        echo "Ring: $Ring"
-        echo "Region: $Regions"
-        echo "Location: $Locations"
-        echo "EnvTypes: $EnvTypes"
+
         echo "Env: $Env"
 
-  Ring:
-    name: "${{ matrix.ring.displayName }}"
+  Env:
+    name: "${{ matrix.env.Ring }}-${{ matrix.env.Region }}-${{ matrix.env.Location }}-${{ matrix.env.EnvType }}-${{ matrix.env.displayName }}"
     runs-on: ubuntu-latest
     needs: [ReadJSON]
     strategy:
       matrix:
-        ring: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-ring) }}
-        region: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-regions) }}
-        location: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-locations) }}
-        envType: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-envTypes) }}
         env: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
     steps:
-    - run: echo "${{ matrix.ring.displayName }} Approved"
-
-  Region:
-    name: "${{ matrix.region.displayName }}"
-    runs-on: ubuntu-latest
-    needs: [ReadJSON, Ring]
-    strategy:
-      matrix:
-        ring: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-ring) }}
-        region: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-regions) }}
-    steps:
-    - run: echo "${{ matrix.region.displayName }} Approved"
+    - run: |
+            echo "displayName: ${{ matrix.env.displayName }}"
+            echo "approvalStageEnv: ${{ matrix.env.approvalStageEnv }}"
+            echo "environmentResourceGroup: ${{ matrix.env.environmentResourceGroup }}"
+            echo "environment: ${{ matrix.env.environment }}"
+            echo "environmentCode: ${{ matrix.env.environmentCode }}"
+      
 
     
  
