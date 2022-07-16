@@ -19,7 +19,7 @@ jobs:
     - name: Export deployment matrix
       id: export-service-deployment-matrix
       run: |
-        echo "${{ inputs.Ring }}" >> ./service-deployment.json
+        "${{ toJSON(inputs.Ring) }}" >> ./service-deployment.json
         
         cat ./service-deployment.json
         
