@@ -1,6 +1,11 @@
 name: Deploy Service - TEST1
 on: 
    workflow_dispatch:
+   
+      inputs:
+         Ring:
+            description: "JSON Object"
+            required: false
 
 jobs:
   ReadJSON:
@@ -15,7 +20,7 @@ jobs:
       id: export-service-deployment-matrix
       run: |
         
-        Env="$(cat ./deployment-config.json | jq '.[]' | jq -s '.' )"
+        Env="$( ${{ inputs.Ring }} | jq '.[]' | jq -s '.' )"
         Env="${Env//'%'/'%25'}"
         Env="${Env//$'\n'/'%0A'}"
         Env="${Env//$'\r'/'%0D'}"
