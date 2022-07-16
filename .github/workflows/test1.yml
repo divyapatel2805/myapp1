@@ -21,10 +21,6 @@ jobs:
       run: |
         JSON_STRING= '${{ inputs.Ring }}'
         
-        cat $JSON_STRING
-        
-        $JSON_STRING | jq '.[]' .displayName
-        
         Env="$( $JSON_STRING | jq '.[]' | jq -s '.' )"
         Env="${Env//'%'/'%25'}"
         Env="${Env//$'\n'/'%0A'}"
