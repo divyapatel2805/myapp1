@@ -24,7 +24,7 @@ jobs:
 
         echo "Env: " $Env
 
-  EnvironmentsToDeployService:
+  Environments:
     name: "${{ matrix.environment.Ring }}-${{ matrix.environment.Region }}-${{ matrix.environment.Location }}-${{ matrix.environment.EnvType }}-${{ matrix.environment.displayName }}"
     runs-on: ubuntu-latest
     needs: [ReadJSON]
