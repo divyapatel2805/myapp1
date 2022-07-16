@@ -7,10 +7,6 @@ jobs:
     name: "Reading JSON Object"
     runs-on: ubuntu-latest
     outputs:
-      service-deployment-ring: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-ring }}
-      service-deployment-regions: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-regions }}
-      service-deployment-locations: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-locations }}
-      service-deployment-envTypes: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-envTypes }}
       service-deployment-env: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-env }}
     steps:
     - uses: actions/checkout@v2
@@ -26,22 +22,22 @@ jobs:
 
         echo "::set-output name=service-deployment-env::$Env"
 
-        echo "Env: $Env"
+        echo "Env: " $Env
 
-  Env:
-    name: "${{ matrix.env.Ring }}-${{ matrix.env.Region }}-${{ matrix.env.Location }}-${{ matrix.env.EnvType }}-${{ matrix.env.displayName }}"
+  EnvironmentsToDeployService:
+    name: "${{ matrix.environment.Ring }}-${{ matrix.environment.Region }}-${{ matrix.environment.Location }}-${{ matrix.environment.EnvType }}-${{ matrix.environment.displayName }}"
     runs-on: ubuntu-latest
     needs: [ReadJSON]
     strategy:
       matrix:
-        env: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
+        environment: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
     steps:
     - run: |
-            echo "displayName: ${{ matrix.env.displayName }}"
-            echo "approvalStageEnv: ${{ matrix.env.approvalStageEnv }}"
-            echo "environmentResourceGroup: ${{ matrix.env.environmentResourceGroup }}"
-            echo "environment: ${{ matrix.env.environment }}"
-            echo "environmentCode: ${{ matrix.env.environmentCode }}"
+            echo "displayName: ${{ matrix.environment.displayName }}"
+            echo "approvalStageEnv: ${{ matrix.environment.approvalStageEnv }}"
+            echo "environmentResourceGroup: ${{ matrix.environment.environmentResourceGroup }}"
+            echo "environment: ${{ matrix.environment.environment }}"
+            echo "environmentCode: ${{ matrix.environment.environmentCode }}"
       
 
     
