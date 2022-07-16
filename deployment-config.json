@@ -14,7 +14,7 @@
   {
     "name": "Client_Test_001",
     "displayName": "Client Test 001",
-    "approvalStageEnv": "poh-env-prod-eg-clientdev_eastus2",
+    "approvalStageEnv": "poh-env-prod-eg-clientdev_centralus",
     "environmentResourceGroup": "poh-environment-operations",
     "environment": "DevOpsTest",
     "environmentCode": "4",
