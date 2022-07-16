@@ -19,7 +19,10 @@ jobs:
     - name: Export deployment matrix
       id: export-service-deployment-matrix
       run: |
-        echo "${{ inputs.Ring }}" > ./service-deployment.json
+        echo "${{ inputs.Ring }}" >> ./service-deployment.json
+        
+        cat ./service-deployment.json
+        
         Env="$(cat ./service-deployment.json | jq '.[]' | jq -s '.')"
         Env="${Env//'%'/'%25'}"
         Env="${Env//$'\n'/'%0A'}"
