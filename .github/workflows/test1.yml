@@ -68,6 +68,9 @@ jobs:
         env: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
     steps:
     - run: echo "${{ matrix.ring.displayName }} Approved"
-    - run: echo "${{ matrix.ring.region.location.envType.env.displayName }} Approved"
+    - run: echo "${{ matrix.region.displayName }} Approved"
+    - run: echo "${{ matrix.location.displayName }} Approved"
+    - run: echo "${{ matrix.envType.displayName }} Approved"
+    - run: echo "${{ matrix.env.displayName }} Approved"
     
  
