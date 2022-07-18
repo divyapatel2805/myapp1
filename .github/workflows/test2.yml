@@ -33,10 +33,8 @@ jobs:
       matrix:
         environment: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Service Deployment - ${{ matrix.environment.clientName }}
-        uses: ./.github/workflows/deployment-template.yml
-        with:
+      - template: ./.github/workflows/deployment-template.yml
+        parameters:
           AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
           ringLevel: ${{ matrix.environment.Ring }}
           serviceHost: ${{ matrix.environment.serviceHost }}
