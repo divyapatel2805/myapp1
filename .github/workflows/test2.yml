@@ -1,0 +1,62 @@
+name: Deploy Service - TEST2
+on: 
+   workflow_dispatch:
+   
+      inputs:
+         Ring:
+            description: "JSON Object"
+            required: false
+
+jobs:
+  ReadJSON:
+    name: "Reading JSON Object"
+    runs-on: ubuntu-latest
+    outputs:
+      service-deployment-env: ${{ steps.export-service-deployment-matrix.outputs.service-deployment-env }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Export deployment matrix
+      id: export-service-deployment-matrix
+      run: |
+        Env="$( echo '${{ inputs.Ring }}' | jq '.[]' | jq -s '.' )"
+        Env="${Env//'%'/'%25'}"
+        Env="${Env//$'\n'/'%0A'}"
+        Env="${Env//$'\r'/'%0D'}"
+        echo "::set-output name=service-deployment-env::$Env"
+
+  Environments:
+    name: "${{ matrix.environment.Ring }}-${{ matrix.environment.Region }}-${{ matrix.environment.Location }}-${{ matrix.environment.EnvType }}-${{ matrix.environment.displayName }}"
+    runs-on: ubuntu-latest
+    needs: [ReadJSON]
+    strategy:
+      matrix:
+        environment: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
+    steps:
+      - name: Service Deployment - ${{ matrix.environment.clientName }}
+        uses: ./.github/workflows/deployment-template.yml
+        with:
+          AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
+          ringLevel: ${{ matrix.environment.Ring }}
+          serviceHost: ${{ matrix.environment.serviceHost }}
+          appDomainAccount: ${{ matrix.environment.appDomainAccount }}
+          envName: ${{ matrix.environment.environment }}
+          HWSServer: ${{ matrix.environment.HWSServer }}
+          HCServer: ${{ matrix.environment.HCServer }}
+          metajsonfile: "poh-services-metadata.json"
+          AppsToDeploy: "DeployAll"
+          SDRM: $False
+          approvalStageEnv: ${{ matrix.environment.approvalStageEnv }}
+          isRestore: $False
+          POHTenantID: ${{ matrix.environment.POHTenantID }}
+          IDNTenantID: ${{ matrix.environment.IDNTenantID }}
+          POHBASEURL:  ${{ matrix.environment.POHBASEURL }}
+          DevopsKeyVault: "poh-0-durable-ops-kv"
+          GlobalKeyVault: "poh-0-global-ops-kv"
+          HCPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\Helios\\8.7\\HeliosConnect"
+          HWSPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\POH"
+          EnterpriseMangerPath : "C:\\Program Files (x86)\\Allscripts Sunrise\\Enterprise Manager"
+          VirtualConnectionPath : ${{ matrix.environment.VirtualConnectionPath }}
+          envCode: ${{ matrix.environment.environmentCode }}
+          clientName: ${{ matrix.environment.clientName }}
+          clientEnvName: ${{ matrix.environment.environment }}
