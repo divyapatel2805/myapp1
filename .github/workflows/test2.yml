@@ -33,6 +33,7 @@ jobs:
       matrix:
         environment: ${{ fromJSON(needs.ReadJSON.outputs.service-deployment-env) }}
     steps:
+      - uses: actions/checkout@v2
       - name: Service Deployment - ${{ matrix.environment.clientName }}
         uses: ./.github/workflows/deployment-template.yml
         with:
@@ -43,20 +44,20 @@ jobs:
           envName: ${{ matrix.environment.environment }}
           HWSServer: ${{ matrix.environment.HWSServer }}
           HCServer: ${{ matrix.environment.HCServer }}
-          metajsonfile: "poh-services-metadata.json"
-          AppsToDeploy: "DeployAll"
-          SDRM: $False
           approvalStageEnv: ${{ matrix.environment.approvalStageEnv }}
-          isRestore: $False
           POHTenantID: ${{ matrix.environment.POHTenantID }}
           IDNTenantID: ${{ matrix.environment.IDNTenantID }}
           POHBASEURL:  ${{ matrix.environment.POHBASEURL }}
+          envCode: ${{ matrix.environment.environmentCode }}
+          clientName: ${{ matrix.environment.clientName }}
+          clientEnvName: ${{ matrix.environment.environment }}
+          isRestore: $False
+          SDRM: $False
+          metajsonfile: "poh-services-metadata.json"
+          AppsToDeploy: "DeployAll"
           DevopsKeyVault: "poh-0-durable-ops-kv"
           GlobalKeyVault: "poh-0-global-ops-kv"
           HCPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\Helios\\8.7\\HeliosConnect"
           HWSPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\POH"
           EnterpriseMangerPath : "C:\\Program Files (x86)\\Allscripts Sunrise\\Enterprise Manager"
-          VirtualConnectionPath : ${{ matrix.environment.VirtualConnectionPath }}
-          envCode: ${{ matrix.environment.environmentCode }}
-          clientName: ${{ matrix.environment.clientName }}
-          clientEnvName: ${{ matrix.environment.environment }}
+          VirtualConnectionPath : "HeliosConnect/87"
