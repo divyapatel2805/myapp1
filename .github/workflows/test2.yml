@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Service Deployment - ${{ matrix.environment.clientName }}
-        uses: ./.github/actions/deployment-template
+        uses: ./.github/workflows/deployment-template
         with:
           AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
           ringLevel: ${{ matrix.environment.Ring }}
