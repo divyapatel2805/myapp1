@@ -1,11 +1,6 @@
 name: Deploy Service - TEST2
 on: 
    workflow_dispatch:
-   
-      inputs:
-         Ring:
-            description: "JSON Object"
-            required: false
 
 jobs:
   ReadJSON:
