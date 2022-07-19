@@ -1,0 +1,149 @@
+name: Ring0 POH Services Deployment - Prod
+on: 
+   workflow_dispatch:
+
+jobs:
+   Ring0_Approval:
+      runs-on: ubuntu-latest
+      environment: 'poh-services-prod-ring0'
+      steps:
+         - run: echo "Ring 0 Approved"
+
+   US_Region:
+      runs-on: ubuntu-latest
+      needs: Ring0_Approval
+      steps:
+         - run: echo "US_Region Approved"            
+   
+   CANADA_Region:
+      runs-on: ubuntu-latest
+      needs: Ring0_Approval
+      steps:
+         - run: echo "CANADA_Region Approved"
+         
+   Australia_Region:
+      runs-on: ubuntu-latest
+      needs: Ring0_Approval
+      steps:
+         - run: echo "Australia_Region Approved"
+               
+   Singapore_Region:
+      runs-on: ubuntu-latest
+      needs: Ring0_Approval
+      steps:
+         - run: echo "Singapore_Region Approved"
+
+   UK_Region:
+      runs-on: ubuntu-latest
+      needs: Ring0_Approval
+      steps:
+         - run: echo "UK_Region Approved"
+
+   EastUS2_location:
+      runs-on: ubuntu-latest
+      needs: US_Region
+      steps:
+         - run: echo "EastUS2_location Approved"
+
+   EG_Type_Client_Test_UAT:
+      runs-on: ubuntu-latest
+      needs: EastUS2_location
+      steps:
+         - run: echo "Client_Test_UAT Approved"
+
+   EG_Type_Client_Development:
+      runs-on: ubuntu-latest
+      needs: EastUS2_location
+      steps:
+         - run: echo "Client_Development Approved"
+
+   Wise_Test_WE02_001:
+    uses: ./.github/workflows/deployment-template_prod.yml
+    needs: EG_Type_Client_Test_UAT
+    with: 
+      ringLevel: "Ring0"
+      serviceHost: "we02ascmhc001vm.we0.hos"
+      appDomainAccount: "WE0\\TSTSCMServices"
+      envName: "WE02"
+      HWSServer: "we02ascmmm001vm"
+      HCServer: "WE02SCMHC001VM"
+      metajsonfile: "poh-services-metadata.json"
+      AppsToDeploy: "DeployAll"
+      SDRM: $False
+      approvalStageEnv: "poh-2-wise-test"
+      isRestore: $False
+      POHTenantID: "fa1be5b8-5dcf-4a7c-82a1-cff11d480b0d"
+      IDNTenantID: "0cfaa74a-22b8-4267-ad0c-1d7e2eddb645"
+      POHBASEURL: "https://we02ascmmm001vm.we0.hos.allscriptscloud.com/POH/WE02/"
+      DevopsKeyVault: "poh-0-durable-kv"
+      GlobalKeyVault: "poh-0-global-kv"
+      HCPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\Helios\\8.7\\HeliosConnect"
+      HWSPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\POH"
+      EnterpriseMangerPath : "C:\\Program Files (x86)\\Allscripts Sunrise\\Enterprise Manager"
+      VirtualConnectionPath : "HeliosConnect/87"
+      envCode: "2"
+      clientName: "wise"
+      clientEnvName: "we02"
+    secrets:
+      AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
+
+   Wise_Test_WE02_002:
+    uses: ./.github/workflows/deployment-template_prod.yml
+    needs: EG_Type_Client_Test_UAT
+    with: 
+      ringLevel: "Ring0"
+      serviceHost: "we02ascmhc002vm.we0.hos"
+      appDomainAccount: "WE0\\TSTSCMServices"
+      envName: "WE02"
+      HWSServer: "we02ascmmm002vm"
+      HCServer: "WE02SCMHC002VM"
+      metajsonfile: "poh-services-metadata.json"
+      AppsToDeploy: "DeployAll"
+      SDRM: $False
+      approvalStageEnv: "poh-2-wise-test-node2"
+      isRestore: $False
+      POHTenantID: "fa1be5b8-5dcf-4a7c-82a1-cff11d480b0d"
+      IDNTenantID: "0cfaa74a-22b8-4267-ad0c-1d7e2eddb645"
+      POHBASEURL: "https://we02ascmmm002vm.we0.hos.allscriptscloud.com/POH/WE02/"
+      DevopsKeyVault: "poh-0-durable-kv"
+      GlobalKeyVault: "poh-0-global-kv"
+      HCPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\Helios\\8.7\\HeliosConnect"
+      HWSPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\POH"
+      EnterpriseMangerPath : "C:\\Program Files (x86)\\Allscripts Sunrise\\Enterprise Manager"
+      VirtualConnectionPath : "HeliosConnect/87"
+      envCode: "2"
+      clientName: "wise"
+      clientEnvName: "we02"
+    secrets:
+      AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
+
+   Suncomm_Sandbox22_Dev_001:
+    uses: ./.github/workflows/deployment-template_prod.yml
+    needs: EG_Type_Client_Development
+    with: 
+      ringLevel: "Ring0"
+      serviceHost: "SBX1BSCMHC001VM"
+      appDomainAccount: "alc5sgSvcAct"
+      envName: "SANDBOX22"
+      HWSServer: "SBX1BSCMSH001VM"
+      HCServer: "SBX1BSCMHC001VM"
+      metajsonfile: "poh-services-metadata.json"
+      AppsToDeploy: "HIMReportWeb"
+      SDRM: $True
+      approvalStageEnv: "poh-4-suncomm-sandbox22-dev-001"
+      isRestore: $False
+      POHTenantID: "fa1be5b8-5dcf-4a7c-82a1-cff11d480b0d"
+      IDNTenantID: "94b3a312-4abb-44e5-942e-75e6915a9d29"
+      POHBASEURL: "https://SBX1BSCMSH001VM.sandbox.allcom.a/POH/SANDBOX22/"
+      DevopsKeyVault: "poh-0-durable-kv"
+      GlobalKeyVault: "poh-0-global-kv"
+      HCPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\Helios\\8.7\\HeliosConnect"
+      HWSPhysicalPath: "C:\\Program Files (x86)\\Allscripts Sunrise\\POH"
+      EnterpriseMangerPath : "C:\\Program Files (x86)\\Allscripts Sunrise\\Enterprise Manager"
+      VirtualConnectionPath : "HeliosConnect/87"
+      envCode: "4"
+      clientName: "suncomm"
+      clientEnvName: "SANDBOX22"
+    secrets:
+      AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
+    
