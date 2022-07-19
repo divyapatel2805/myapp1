@@ -8,21 +8,37 @@ jobs:
       environment: 'poh-services-prod-ring0'
       steps:
          - run: echo "Ring_0 Approved"
+
    US_Region:
       runs-on: ubuntu-latest
       needs: Ring_0
       steps:
          - run: echo "US_Region_Region Approved"
+
    EastUS2_Location:
       runs-on: ubuntu-latest
       needs: US_Region
       steps:
          - run: echo "EastUS2_Location_Location Approved"
+
    Client_Development:
       runs-on: ubuntu-latest
       needs: EastUS2_Location
       steps:
          - run: echo "Client_Development Approved"
+
+   CentralUS_Location:
+      runs-on: ubuntu-latest
+      needs: US_Region
+      steps:
+         - run: echo "CentralUS_Location_Location Approved"
+
+   Client_Test_UAT:
+      runs-on: ubuntu-latest
+      needs: CentralUS_Location
+      steps:
+         - run: echo "Client_Test_UAT Approved"
+
    Client_Development_001:
       uses: ./.github/workflows/deployment-template_prod.yml
       needs: Client_Development
@@ -52,16 +68,7 @@ jobs:
          VirtualConnectionPath: "HeliosConnect/87"
       secrets:
          AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
-   CentralUS_Location:
-      runs-on: ubuntu-latest
-      needs: US_Region
-      steps:
-         - run: echo "CentralUS_Location_Location Approved"
-   Client_Test_UAT:
-      runs-on: ubuntu-latest
-      needs: CentralUS_Location
-      steps:
-         - run: echo "Client_Test_UAT Approved"
+
    Client_Test_001:
       uses: ./.github/workflows/deployment-template_prod.yml
       needs: Client_Test_UAT
@@ -91,3 +98,4 @@ jobs:
          VirtualConnectionPath: "HeliosConnect/87"
       secrets:
          AZURE_DEVOPS_PAT_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT_TOKEN }}
+
